@@ -1,0 +1,473 @@
+/* SpamGuard Core Landing Page Styles */
+
+/* 1. Page Background & Layout */
+.landing-body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Ambient Radial Blur Background Blobs */
+.bg-glow-blobs {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.12;
+    mix-blend-mode: screen;
+    animation: floatBlob 20s infinite alternate ease-in-out;
+}
+
+.blob-cyan {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--color-brand) 0%, transparent 70%);
+    top: -100px;
+    left: -100px;
+}
+
+.blob-emerald {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--color-safe) 0%, transparent 70%);
+    bottom: -150px;
+    right: -100px;
+    animation-delay: -5s;
+}
+
+.blob-rose {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--color-danger) 0%, transparent 70%);
+    top: 35%;
+    right: 15%;
+    opacity: 0.06;
+    animation-delay: -10s;
+}
+
+@keyframes floatBlob {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    100% {
+        transform: translate(50px, 40px) scale(1.1);
+    }
+}
+
+/* Cyber Tech Grid Background overlay */
+.cyber-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: 
+        linear-gradient(rgba(30, 37, 48, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 37, 48, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.8;
+}
+
+/* 2. Main Content Wrapper */
+.landing-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3.5rem;
+}
+
+/* 3. Hero Section */
+.hero-section {
+    text-align: center;
+    max-width: 800px;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.brand-logo-container {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 2rem;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.brand-logo-container:hover {
+    transform: scale(1.08) rotate(2deg);
+}
+
+.brand-logo-container::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 70%;
+    height: 70%;
+    background: var(--color-brand);
+    border-radius: 50%;
+    filter: blur(25px);
+    opacity: 0.2;
+    z-index: -1;
+    transition: opacity 0.3s;
+}
+
+.brand-logo-container:hover::after {
+    opacity: 0.4;
+}
+
+.hero-subtitle {
+    font-family: var(--font-mono);
+    color: var(--color-brand);
+    font-size: 0.85rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: 3.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    color: #ffffff;
+    margin-bottom: 1.25rem;
+}
+
+.hero-title span {
+    background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-safe) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+}
+
+.hero-desc {
+    color: var(--text-sub);
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 620px;
+    margin-bottom: 2.25rem;
+}
+
+/* CTA Call to Action */
+.cta-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.landing-cta-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, var(--color-brand) 0%, #0d9488 100%);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 20px var(--color-brand-glow);
+    transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.landing-cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.6s;
+}
+
+.landing-cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(56, 189, 248, 0.4);
+}
+
+.landing-cta-btn:hover::before {
+    left: 100%;
+}
+
+.landing-cta-btn i {
+    font-size: 0.95rem;
+    transition: transform 0.2s;
+}
+
+.landing-cta-btn:hover i {
+    transform: translateX(4px);
+}
+
+.cta-subtext {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* 4. Live Simulation Showcase Panel */
+.simulator-panel {
+    width: 100%;
+    max-width: 760px;
+    background: rgba(15, 19, 28, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+.sim-header {
+    background: rgba(10, 13, 20, 0.8);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sim-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.sim-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.sim-dot:nth-child(1) { background-color: var(--color-danger); }
+.sim-dot:nth-child(2) { background-color: var(--color-warn); }
+.sim-dot:nth-child(3) { background-color: var(--color-safe); }
+
+.sim-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.sim-body {
+    padding: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #94a3b8;
+}
+
+.sim-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.6;
+}
+
+.sim-prompt {
+    color: var(--color-brand);
+    user-select: none;
+}
+
+.sim-text-input {
+    color: #e2e8f0;
+}
+
+.sim-output {
+    padding-left: 15px;
+    margin-bottom: 5px;
+    animation: simFade 0.4s ease-out both;
+}
+
+.sim-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.sim-badge.spam {
+    background-color: var(--color-danger-bg);
+    color: var(--color-danger);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.sim-badge.ham {
+    background-color: var(--color-safe-bg);
+    color: var(--color-safe);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+@keyframes simFade {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 5. Features Section Grid */
+.features-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.feature-card {
+    background: rgba(15, 19, 28, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--border-hover);
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.05);
+}
+
+.feature-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: rgba(56, 189, 248, 0.06);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: var(--color-brand);
+    font-size: 1.25rem;
+    transition: all 0.3s;
+}
+
+.feature-card:hover .feature-icon-wrapper {
+    background: rgba(56, 189, 248, 0.12);
+    border-color: var(--color-brand);
+    box-shadow: 0 0 12px var(--color-brand-glow);
+}
+
+.feature-card.safe:hover .feature-icon-wrapper {
+    color: var(--color-safe);
+    background: rgba(16, 185, 129, 0.06);
+    border-color: rgba(16, 185, 129, 0.15);
+}
+.feature-card.safe:hover .feature-icon-wrapper {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: var(--color-safe);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+}
+
+.feature-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #ffffff;
+}
+
+.feature-card p {
+    color: var(--text-sub);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* 6. Footer Section */
+.landing-footer {
+    width: 100%;
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem 0;
+    text-align: center;
+    margin-top: 4rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    z-index: 2;
+}
+
+.landing-footer a {
+    color: var(--color-brand);
+    text-decoration: none;
+}
+
+.landing-footer a:hover {
+    text-decoration: underline;
+}
+
+/* 7. Keyframes & Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjust */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.8rem;
+    }
+    .landing-wrapper {
+        padding: 2rem 1rem;
+        gap: 2.5rem;
+    }
+    .feature-card {
+        padding: 1.5rem;
+    }
+}

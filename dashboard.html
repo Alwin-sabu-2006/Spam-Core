@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpamGuard Core // Professional Security & Threat Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-theme">
+    <div class="app-layout">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" class="brand-icon" style="width: 26px; height: 26px; flex-shrink: 0; filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.2));">
+                    <defs>
+                        <linearGradient id="shieldGradDash" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#38bdf8" />
+                            <stop offset="50%" stop-color="#06b6d4" />
+                            <stop offset="100%" stop-color="#10b981" />
+                        </linearGradient>
+                        <linearGradient id="innerGradDash" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#0a0d14" />
+                            <stop offset="100%" stop-color="#0f131c" />
+                        </linearGradient>
+                        <filter id="glowDash" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="3" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                    </defs>
+                    <path d="M 50,12 L 85,22 C 85,55 70,82 50,92 C 30,82 15,55 15,22 Z" 
+                          stroke="url(#shieldGradDash)" stroke-width="3.5" filter="url(#glowDash)" stroke-linejoin="round" />
+                    <path d="M 50,16 L 81,25 C 81,52 68,77 50,86 C 32,77 19,52 19,25 Z" 
+                          fill="url(#innerGradDash)" stroke="#1e2530" stroke-width="1.5" />
+                    <circle cx="50" cy="46" r="18" stroke="rgba(56, 189, 248, 0.15)" stroke-width="1.2" stroke-dasharray="6 3" />
+                    <circle cx="50" cy="46" r="12" stroke="rgba(16, 185, 129, 0.25)" stroke-width="1" />
+                    <circle cx="50" cy="46" r="3" fill="#38bdf8" opacity="0.3" />
+                    <path d="M 42,46 L 47,51 L 58,40" stroke="#10b981" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowDash)" />
+                </svg>
+                <div class="brand-name">
+                    <h2>SpamGuard <span class="accent-text">Core</span></h2>
+                    <span>v1.2.0 // Security Engine</span>
+                </div>
+            </div>
+            
+            <div class="system-status-indicator">
+                <div class="status-row">
+                    <span class="status-label">SERVER STATUS</span>
+                    <span class="status-value"><span class="status-dot online"></span> ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">GOOGLE CLOUD</span>
+                    <span id="google-api-status" class="status-value"><span class="status-dot offline"></span> SANDBOX</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-target="panel-message">
+                    <i class="fa-solid fa-envelope-open-text"></i> Message Classifier
+                </button>
+                <button class="nav-item" data-target="panel-link">
+                    <i class="fa-solid fa-link-slash"></i> Link Threat Scanner
+                </button>
+                <button class="nav-item" data-target="panel-news">
+                    <i class="fa-solid fa-newspaper"></i> News Credibility
+                </button>
+                <button class="nav-item" data-target="panel-dev">
+                    <i class="fa-solid fa-square-terminal"></i> Console & Configs
+                </button>
+                <button class="nav-item" id="logout-btn" style="margin-top: auto; color: var(--spam-color);">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>System Workspace: Active</p>
+                <p>&copy; 2026 SpamGuard Core</p>
+            </div>
+        </aside>
+
+        <!-- Right Side Main Dashboard Content -->
+        <main class="main-content">
+            
+            <!-- Dashboard Top Header Bar -->
+            <header class="dashboard-header">
+                <div class="header-title">
+                    <h1 id="active-panel-title">Message Classifier</h1>
+                    <p id="active-panel-desc">Real-time Naive Bayes Natural Language Processing threat scanning.</p>
+                </div>
+                <div class="sys-metrics">
+                    <div class="metric-pill">
+                        <span class="lbl">VOCAB SIZE</span>
+                        <span id="header-vocab-size" class="val">0</span>
+                    </div>
+                    <div class="metric-pill">
+                        <span class="lbl">TRAINED MESSAGES</span>
+                        <span id="header-trained-size" class="val">5,574</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-viewport">
+                
+                <!-- Panel 1: Message Classifier -->
+                <div id="panel-message" class="dashboard-panel active">
+                    <div class="dashboard-grid grid-split">
+                        <!-- Sandbox inputs -->
+                        <section class="db-card">
+                            <div class="db-card-header">
+                                <h3><i class="fa-solid fa-keyboard"></i> Text Input Sandbox</h3>
+                                <button id="clear-msg-btn" class="btn-flat btn-icon-only" title="Clear Sandbox"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                            
+                            <div class="textarea-wrapper">
+                                <textarea id="message-text" placeholder="Enter message body or email content to scan for linguistic triggers..."></textarea>
+                                <div class="character-statistics">
+                                    <span id="text-char-count">0 characters</span>
+                                    <span id="text-word-count">0 words</span>
+                                </div>
+                            </div>
+
+                            <button id="analyze-msg-btn" class="btn btn-brand btn-glowing"><i class="fa-solid fa-play"></i> Execute Analysis</button>
+
+                            <div class="card-divider"><span>OR BATCH PROCESSING</span></div>
+
+                            <div id="dropzone" class="upload-dropzone">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <p>Drag & Drop a bulk <strong>.txt</strong> or <strong>.csv</strong> file here to scan</p>
+                                <span>Batch analysis will write directly to system history logs</span>
+                                <input type="file" id="file-uploader" accept=".txt,.csv" hidden>
+                            </div>
+                        </section>
+
+                        <!-- Sandbox outputs -->
+                        <section class="db-card flex-column">
+                            <div class="db-card-header">
+                                <h3><i class="fa-solid fa-chart-column"></i> Real-time Threat Output</h3>
+                            </div>
+
+                            <div id="classifier-idle" class="db-panel-state active">
+                                <i class="fa-solid fa-network-wired pulse"></i>
+                                <p>Awaiting text execution. Input content inside the Sandbox to initialize Naive Bayes classifier calculations.</p>
+                            </div>
+
+                            <div id="classifier-loading" class="db-panel-state">
+                                <div class="scanning-loader"></div>
+                                <p>Analyzing text tokens and computing logarithmic probabilities...</p>
+                            </div>
+
+                            <div id="classifier-output" class="db-panel-state text-left-align">
+                                <div id="verdict-banner" class="verdict-banner ham">
+                                    <div class="verdict-badge">
+                                        <i id="verdict-icon" class="fa-solid fa-check-double"></i>
+                                        <span id="verdict-text">HAM (SAFE)</span>
+                                    </div>
+                                    <span id="verdict-confidence-pct">100.0%</span>
+                                </div>
+
+                                <div class="result-metric-row">
+                                    <div class="pb-label">
+                                        <span>Normalized Threat Probability</span>
+                                        <span id="result-threat-percentage">0.0%</span>
+                                    </div>
+                                    <div class="flat-progress-bg">
+                                        <div id="result-threat-fill" class="flat-progress-fill" style="width: 0%"></div>
+                                    </div>
+                                    <p id="result-metric-explanation" class="subtext-detail">This text demonstrates safe linguistic characteristics.</p>
+                                </div>
+
+                                <div class="analysis-box-group">
+                                    <h4>Linguistic Trigger Mapping</h4>
+                                    <div id="highlighted-output-box" class="console-text-box">
+                                        <!-- Highlighted words injected here -->
+                                    </div>
+                                    <p class="subtext-detail"><span class="dot-indicator spam-dot"></span> Red words indicate tokens with a high probability ratio for spam.</p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Statistics section -->
+                    <div class="dashboard-grid grid-quad">
+                        <div class="db-metric-card">
+                            <div class="icon-wrap"><i class="fa-solid fa-percent"></i></div>
+                            <div class="info-wrap">
+                                <span>Trigger Word Ratio</span>
+                                <h4 id="stat-ratio">0.0%</h4>
+                            </div>
+                        </div>
+                        <div class="db-metric-card">
+                            <div class="icon-wrap"><i class="fa-solid fa-circle-exclamation"></i></div>
+                            <div class="info-wrap">
+                                <span>Urgency Indicators</span>
+                                <h4 id="stat-urgency">None</h4>
+                            </div>
+                        </div>
+                        <div class="db-metric-card">
+                            <div class="icon-wrap"><i class="fa-solid fa-calculator"></i></div>
+                            <div class="info-wrap">
+                                <span>Numeric Tokens</span>
+                                <h4 id="stat-digits">0 digits</h4>
+                            </div>
+                        </div>
+                        <div class="db-metric-card">
+                            <div class="icon-wrap"><i class="fa-solid fa-arrow-up-a-z"></i></div>
+                            <div class="info-wrap">
+                                <span>ALL-CAPS Shouting</span>
+                                <h4 id="stat-caps">0 words</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History logs -->
+                    <div class="db-card mt-2">
+                        <div class="db-card-header">
+                            <h3><i class="fa-solid fa-clock-rotate-left"></i> Local Audit History</h3>
+                            <div class="header-action-row">
+                                <button id="history-export-btn" class="btn btn-secondary btn-sm"><i class="fa-solid fa-file-export"></i> Export CSV</button>
+                                <button id="history-clear-btn" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i> Clear History</button>
+                            </div>
+                        </div>
+                        <div class="table-scrollable">
+                            <table id="logs-table">
+                                <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Content Snippet</th>
+                                        <th>Status Classification</th>
+                                        <th>Inference Confidence</th>
+                                        <th>Inspect Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="table-empty-row">
+                                        <td colspan="5">No logs in buffer. Initiate analyses to record audit trails.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 2: Link Threat Scanner -->
+                <div id="panel-link" class="dashboard-panel">
+                    <div class="dashboard-grid grid-split">
+                        
+                        <!-- URL inputs -->
+                        <section class="db-card">
+                            <div class="db-card-header">
+                                <h3><i class="fa-solid fa-globe"></i> URL Reputation Scanner</h3>
+                            </div>
+                            <div class="form-group">
+                                <label>Target URL Link</label>
+                                <div class="input-addon-wrapper">
+                                    <span class="input-addon"><i class="fa-solid fa-lock"></i></span>
+                                    <input type="text" id="url-input" placeholder="e.g. secure-login.bank-update.xyz/verify">
+                                </div>
+                                <span class="input-help">The URL will be scanned in the backend using Google Safe Browsing or URL heuristics reputation analyzers.</span>
+                            </div>
+                            <button id="scan-url-btn" class="btn btn-brand"><i class="fa-solid fa-shield-virus"></i> Execute Link Scan</button>
+                        </section>
+
+                        <!-- URL outputs -->
+                        <section class="db-card flex-column">
+                            <div class="db-card-header">
+                                <h3><i class="fa-solid fa-bug"></i> Link Reputation Results</h3>
+                            </div>
+
+                            <div id="url-idle" class="db-panel-state active">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <p>Enter a URL on the left side and execute the link scan to query reputation threat databases.</p>
+                            </div>
+
+                            <div id="url-loading" class="db-panel-state">
+                                <div class="scanning-loader"></div>
+                                <p>Querying threat matches against Google Safe Browsing registries...</p>
+                            </div>
+
+                            <div id="url-output" class="db-panel-state text-left-align">
+                                <div id="url-verdict" class="verdict-banner clean">
+                                    <div class="verdict-badge">
+                                        <i id="url-verdict-icon" class="fa-solid fa-shield-check"></i>
+                                        <span id="url-verdict-text">NO SUSPICION</span>
+                                    </div>
+                                    <span id="url-verdict-source">Local Engine</span>
+                                </div>
+
+                                <div class="analysis-box-group">
+                                    <h4>Threat Description</h4>
+                                    <p id="url-verdict-details" class="console-box-paragraph">Passed reputation verification tests successfully.</p>
+                                </div>
+
+                                <div class="analysis-box-group">
+                                    <h4>Heuristic Flag Log</h4>
+                                    <div id="url-flags-log" class="console-text-box font-mono text-sm">
+                                        <!-- Flags logs list -->
+                                        All tests passed. Clean URL reputation record.
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Panel 3: News Credibility -->
+                <div id="panel-news" class="dashboard-panel">
+                    <div class="db-card mb-2">
+                        <div class="db-card-header">
+                            <h3><i class="fa-solid fa-newspaper"></i> News Credibility & Fact Checker</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>News Claim / Headline search query</label>
+                            <div class="input-search-wrapper">
+                                <input type="text" id="news-query" placeholder="e.g. flat earth conspiracy or covid microchips...">
+                                <button id="check-news-btn" class="btn btn-brand"><i class="fa-solid fa-magnifying-glass"></i> Search Claims</button>
+                            </div>
+                            <span class="input-help">Uses the Google Fact Check Tools API to find fact-checks by verified institutions, or keyless open source search references (Wikipedia).</span>
+                        </div>
+                    </div>
+
+                    <div class="db-card">
+                        <div class="db-card-header">
+                            <h3><i class="fa-solid fa-check-double"></i> Fact-Check Verification Logs</h3>
+                            <span id="news-engine-source" class="badge">Awaiting query</span>
+                        </div>
+
+                        <div id="news-idle" class="db-panel-state active">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                            <p>Enter a news query above to search verification registries for fact checking notes.</p>
+                        </div>
+
+                        <div id="news-loading" class="db-panel-state">
+                            <div class="scanning-loader"></div>
+                            <p>Querying verified fact-check publications...</p>
+                        </div>
+
+                        <div id="news-output" class="db-panel-state text-left-align" style="display: none;">
+                            <div id="news-cards-container" class="news-cards-container">
+                                <!-- Dynamic claims checks go here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 4: Console & Configs -->
+                <div id="panel-dev" class="dashboard-panel">
+                    <div class="dashboard-grid grid-split">
+                        <!-- Dev console logs -->
+                        <section class="db-card font-mono flex-column">
+                            <div class="db-card-header">
+                                <h3><i class="fa-solid fa-terminal"></i> Core System Activity Logs</h3>
+                                <button id="clear-console-btn" class="btn-flat btn-icon-only" title="Clear Console Log"><i class="fa-solid fa-eraser"></i></button>
+                            </div>
+                            <div id="console-logs" class="system-logs-box">
+                                [16:20:49] SYSTEM: SpamGuard Core security platform initialized.<br>
+                                [16:20:49] SYSTEM: Waiting for local backend server response...
+                            </div>
+                        </section>
+
+                        <!-- Mathematical statistics lookup -->
+                        <section class="db-card">
+                            <div class="db-card-header">
+                                <h3><i class="fa-solid fa-calculator"></i> Active Naive Bayes Vocabulary</h3>
+                            </div>
+                            <p class="subtext-detail mb-1">Interactive table detailing probability weights mapped from model training.</p>
+                            <div class="table-scrollable" style="max-height: 380px;">
+                                <table id="vocab-prob-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Word Token</th>
+                                            <th>P(Word | Spam)</th>
+                                            <th>P(Word | Ham)</th>
+                                            <th>Ratio</th>
+                                            <th>Classification Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="table-empty-row">
+                                            <td colspan="5">Run a text message scan to view keyword breakdown.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Auditing Details Modal -->
+    <div id="audit-details-modal" class="modal">
+        <div class="modal-wrapper db-card font-mono">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-code"></i> Mathematical Audit Details</h3>
+                <span id="close-modal-btn" class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-meta-bar">
+                    <span id="modal-meta-time">16:20:49</span>
+                    <span id="modal-meta-badge" class="badge">HAM</span>
+                </div>
+                <div class="modal-field">
+                    <label>Linguistic Message Content</label>
+                    <div id="modal-text-content" class="console-text-box font-sans">Message body...</div>
+                </div>
+                <div class="modal-field">
+                    <label>Log Probability Summation</label>
+                    <p id="modal-log-likelihood-calc">Calculations...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Scripts -->
+    <script src="app.js?v=2"></script>
+</body>
+</html>
