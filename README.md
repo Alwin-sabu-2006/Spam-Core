@@ -1,6 +1,6 @@
 # SpamDetect AI - Intelligent Spam & Ham Classifier
 
-SpamDetect AI is a fully functional, professional, and responsive web application that detects spam in text messages (SMS and emails) using statistical machine learning. It is built as a complete client-server decoupled architecture where model training is performed offline in Python, and real-time inference runs entirely in the browser using JavaScript.
+SpamDetect AI is a fully functional, professional, and responsive web application that detects spam in text messages (SMS and emails) using statistical machine learning. It is built as a complete client-server decoupled architecture where model training is performed offline in Python, and real-time inference runs entirely in the browser using JavaScript.It is built with the help of AI
 
 ## Features
 
